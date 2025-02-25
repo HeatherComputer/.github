@@ -8,7 +8,7 @@ on:
 jobs:
   action:
     #Can only run on issues, not PRs.
-    if: ${{ !github.event.issue.pull_request && github.event.comment.body.contains('!target') }}
+    if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body,'!target') }}
     runs-on: ubuntu-latest
 
     steps:

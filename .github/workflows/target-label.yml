@@ -1,0 +1,25 @@
+name: 'Target Label'
+
+on:
+  issues:
+    types: [labeled, unlabeled, reopened]
+  workflow_call:
+
+jobs:
+  action:
+    #Can only run on issues, not PRs.
+    if: ${{ !github.event.issue.pull_request && github.event.comment.body.contains('!target') }}
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Get Version
+      id: version
+      run: |
+        X=`echo {{ github.event.comment.body }}  | grep -o '!target.*' | awk '{print $2}'`; echo "Target: $X" >> "$GITHUB_OUTPUT"
+        echo "Target : $X"
+
+    - name : "Create label if it doesn't exist"
+      id: create-label
+      run: |
+        gh label list
